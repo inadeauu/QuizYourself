@@ -1,16 +1,20 @@
 import { TRPCError, initTRPC } from "@trpc/server"
 import * as trpcExpress from "@trpc/server/adapters/express"
-import { Session, SessionData } from "express-session"
+import type { Request, Response } from "express"
 import superjson from "superjson"
 import { ZodError } from "zod"
 import prisma from "../prisma/prisma"
 
 type CreateContextOptions = {
-  session: (Session & Partial<SessionData>) | null
+  req: Request
+  res: Response
+  session: Express.Request["session"]
 }
 
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
+    req: opts.req,
+    res: opts.res,
     session: opts.session,
     prisma,
   }
@@ -19,9 +23,11 @@ const createInnerTRPCContext = (opts: CreateContextOptions) => {
 export const createTRPCContext = async (
   opts: trpcExpress.CreateExpressContextOptions
 ) => {
-  const { req } = opts
+  const { req, res } = opts
 
   return createInnerTRPCContext({
+    req,
+    res,
     session: req.session,
   })
 }
@@ -51,6 +57,7 @@ const checkUserAuth = t.middleware(({ ctx, next }) => {
 
   return next({
     ctx: {
+      ...ctx,
       session: { ...ctx.session, userId: ctx.session.userId },
     },
   })

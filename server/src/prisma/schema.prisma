@@ -7,8 +7,8 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model User {
-  id         Int      @id @default(autoincrement())
+model App_user {
+  id         String   @id @default(uuid())
   username   String   @unique
   password   String
   created_at DateTime @default(now())
@@ -16,7 +16,7 @@ model User {
 }
 
 model Quiz {
-  id          Int      @id @default(autoincrement())
+  id          String   @id @default(uuid())
   title       String   @db.VarChar(100)
   description String?  @db.VarChar(500)
   created_at  DateTime @default(now())
@@ -27,9 +27,9 @@ model Quiz {
 }
 
 model Question {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   body       String   @db.VarChar(500)
-  quizId     Int
+  quizId     String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
@@ -38,11 +38,11 @@ model Question {
 }
 
 model Answer {
-  id         Int      @id @default(autoincrement())
+  id         String   @id @default(uuid())
   body       String   @db.VarChar(500)
   correct    Boolean
-  quizId     Int
-  questionId Int
+  quizId     String
+  questionId String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 

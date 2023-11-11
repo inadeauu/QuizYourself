@@ -1,6 +1,7 @@
-import { useState } from "react"
-import { trpc } from "../utils/trpc"
+import React, { useState } from "react"
 import Input from "../components/Input"
+import { trpc } from "../utils/trpc"
+import ErrorCard from "../components/ErrorCard"
 import { Link, useNavigate } from "react-router-dom"
 
 type fieldErrors = {
@@ -8,19 +9,21 @@ type fieldErrors = {
   password: string | null
 }
 
-const Signup = () => {
+const Login = () => {
   const [username, setUsername] = useState("")
   const [password, setPassword] = useState("")
   const [fieldErrors, setFieldErrors] = useState<fieldErrors>({
     username: null,
     password: null,
   })
+  const [error, setError] = useState("")
 
   const navigate = useNavigate()
 
-  const signup = trpc.auth.signup.useMutation({
+  const login = trpc.auth.login.useMutation({
     onSuccess: () => {
       setFieldErrors({ username: null, password: null })
+      setError("")
       navigate("/")
     },
     onError: (error) => {
@@ -32,20 +35,23 @@ const Signup = () => {
           password: fieldErrors["password"]?.[0] ?? null,
         })
       }
+
+      setError(error.message)
     },
   })
 
-  const submitSignup = (e: React.FormEvent<HTMLFormElement>) => {
+  const submitLogin = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
-    signup.mutate({ username, password })
+    login.mutate({ username, password })
   }
 
   return (
     <div className="flex flex-col gap-2">
       <div className="flex flex-col gap-2 border-2 border-black p-4 w-[350px]">
-        <h1 className="text-xl font-medium">Sign Up</h1>
-        <form className="flex flex-col gap-2" onSubmit={(e) => submitSignup(e)}>
+        <h1 className="text-xl font-medium">Log In</h1>
+        {error && <ErrorCard error={error} />}
+        <form className="flex flex-col gap-2" onSubmit={(e) => submitLogin(e)}>
           <Input
             name="username"
             id="username"
@@ -70,23 +76,23 @@ const Signup = () => {
           <button
             type="submit"
             className="btn_blue mx-auto px-2 py-1 mt-2"
-            disabled={signup.isLoading}
+            disabled={login.isLoading}
           >
             Submit
           </button>
         </form>
       </div>
       <p className="text-sm">
-        Already have an account?{" "}
+        Don't have an account?{" "}
         <Link
-          to="/login"
+          to="/signup"
           className="text-blue-500 font-semibold hover:underline"
         >
-          Log in
+          Sign up
         </Link>
       </p>
     </div>
   )
 }
 
-export default Signup
+export default Login
