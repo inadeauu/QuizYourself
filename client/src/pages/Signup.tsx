@@ -16,11 +16,14 @@ const Signup = () => {
     password: null,
   })
 
+  const utils = trpc.useUtils()
+
   const navigate = useNavigate()
 
   const signup = trpc.auth.signup.useMutation({
     onSuccess: () => {
       setFieldErrors({ username: null, password: null })
+      utils.auth.getAuthedUser.invalidate()
       navigate("/")
     },
     onError: (error) => {
@@ -42,7 +45,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 mt-8">
       <div className="flex flex-col gap-2 border-2 border-black p-4 w-[350px]">
         <h1 className="text-xl font-medium">Sign Up</h1>
         <form className="flex flex-col gap-2" onSubmit={(e) => submitSignup(e)}>

@@ -18,12 +18,15 @@ const Login = () => {
   })
   const [error, setError] = useState("")
 
+  const utils = trpc.useUtils()
+
   const navigate = useNavigate()
 
   const login = trpc.auth.login.useMutation({
     onSuccess: () => {
       setFieldErrors({ username: null, password: null })
       setError("")
+      utils.auth.getAuthedUser.invalidate()
       navigate("/")
     },
     onError: (error) => {
@@ -47,7 +50,7 @@ const Login = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 mt-8">
       <div className="flex flex-col gap-2 border-2 border-black p-4 w-[350px]">
         <h1 className="text-xl font-medium">Log In</h1>
         {error && <ErrorCard error={error} />}

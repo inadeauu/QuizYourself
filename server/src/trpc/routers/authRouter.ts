@@ -74,9 +74,9 @@ export const authRouter = router({
       opts.ctx.res.clearCookie("connect.sid")
     })
   }),
-  getAuthedUser: protectedProcedure.query(async (opts) => {
+  getAuthedUser: publicProcedure.query(async (opts) => {
     const user = await prisma.app_user.findUnique({
-      where: { id: opts.ctx.session.userId },
+      where: { id: opts.ctx.session.userId ?? "" },
       select: {
         id: true,
         username: true,

@@ -33,7 +33,7 @@ const Input = ({ label, error, password = false, ...props }: InputProps) => {
         />
         {password && (
           <div
-            className="flex items-center justify-center"
+            className="flex items-center justify-center hover:cursor-pointer"
             onClick={() => setShowPassword((prev) => !prev)}
           >
             {showPassword ? (
