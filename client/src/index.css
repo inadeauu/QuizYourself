@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.btn_blue {
+  @apply bg-blue-500 text-white rounded-sm disabled:bg-blue-300;
+}
+
+.btn_red {
+  @apply bg-red-500 text-white rounded-sm disabled:bg-red-300;
+}

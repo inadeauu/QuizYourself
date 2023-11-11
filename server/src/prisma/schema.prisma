@@ -1,0 +1,51 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique
+  password   String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Quiz {
+  id          Int      @id @default(autoincrement())
+  title       String   @db.VarChar(100)
+  description String?  @db.VarChar(500)
+  created_at  DateTime @default(now())
+  updated_at  DateTime @updatedAt
+
+  Questions Question[]
+  Answers   Answer[]
+}
+
+model Question {
+  id         Int      @id @default(autoincrement())
+  body       String   @db.VarChar(500)
+  quizId     Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Quiz    Quiz     @relation(fields: [quizId], references: [id])
+  Answers Answer[]
+}
+
+model Answer {
+  id         Int      @id @default(autoincrement())
+  body       String   @db.VarChar(500)
+  correct    Boolean
+  quizId     Int
+  questionId Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  Quiz     Quiz     @relation(fields: [quizId], references: [id])
+  Question Question @relation(fields: [questionId], references: [id])
+}
