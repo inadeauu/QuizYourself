@@ -54,7 +54,7 @@ const ProfileDropdown = () => {
             <div className="flex flex-col">
               <Link
                 to="/create-quiz"
-                className="bg-orange-400 hover:bg-orange-500 text-white py-1 px-2 text-sm"
+                className="btn_orange py-1 px-2 text-sm"
                 onClick={() => setOpen((prev) => !prev)}
               >
                 Create a quiz.

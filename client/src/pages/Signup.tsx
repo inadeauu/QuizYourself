@@ -45,7 +45,7 @@ const Signup = () => {
   }
 
   return (
-    <div className="flex flex-col gap-2 mt-8">
+    <div className="flex flex-col gap-2 mt-8 w-fit mx-auto">
       <div className="flex flex-col gap-2 border-2 border-black p-4 w-[350px]">
         <h1 className="text-xl font-medium">Sign Up</h1>
         <form className="flex flex-col gap-2" onSubmit={(e) => submitSignup(e)}>
@@ -54,6 +54,7 @@ const Signup = () => {
             id="username"
             label="Username"
             type="text"
+            classes="px-1"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
             error={fieldErrors.username}
@@ -64,6 +65,7 @@ const Signup = () => {
             id="password"
             label="Password"
             type="password"
+            classes="px-1"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             error={fieldErrors.password}

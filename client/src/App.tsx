@@ -5,6 +5,7 @@ import Signup from "./pages/Signup"
 import Login from "./pages/Login"
 import CreateQuiz from "./pages/CreateQuiz"
 import ProtectedRoute from "./pages/ProtectedRoute"
+import QuizProvider from "./contexts/QuizProvider"
 
 const App = () => {
   return (
@@ -14,7 +15,14 @@ const App = () => {
         <Route path="/signup" element={<Signup />} />
         <Route path="/login" element={<Login />} />
         <Route element={<ProtectedRoute />}>
-          <Route path="/create-quiz" element={<CreateQuiz />} />
+          <Route
+            path="/create-quiz"
+            element={
+              <QuizProvider>
+                <CreateQuiz />
+              </QuizProvider>
+            }
+          />
         </Route>
       </Route>
     </Routes>

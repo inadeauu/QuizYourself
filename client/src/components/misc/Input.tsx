@@ -4,13 +4,20 @@ import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai"
 type InputProps = {
   label?: string
   password?: boolean
-  error: string | null
+  classes?: string
+  error?: string | null
 } & React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
 >
 
-const Input = ({ label, error, password = false, ...props }: InputProps) => {
+const Input = ({
+  label,
+  error = null,
+  classes,
+  password = false,
+  ...props
+}: InputProps) => {
   const [showPassword, setShowPassword] = useState(false)
 
   props.type = password ? (showPassword ? "text" : "password") : props.type
@@ -24,7 +31,7 @@ const Input = ({ label, error, password = false, ...props }: InputProps) => {
       )}
       <div className="flex gap-2">
         <input
-          className={`border-2 outline-none rounded-sm px-[2px] w-full ${
+          className={`${classes} border-2 outline-none rounded-sm w-full ${
             error
               ? "border-red-400 focus:border-red-700"
               : "border-black focus:border-blue-500"
