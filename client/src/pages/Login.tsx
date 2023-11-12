@@ -1,7 +1,7 @@
 import React, { useState } from "react"
-import Input from "../components/Input"
+import Input from "../components/misc/Input"
 import { trpc } from "../utils/trpc"
-import ErrorCard from "../components/ErrorCard"
+import ErrorCard from "../components/misc/ErrorCard"
 import { Link, useNavigate } from "react-router-dom"
 
 type fieldErrors = {
@@ -78,7 +78,7 @@ const Login = () => {
           />
           <button
             type="submit"
-            className="btn_blue mx-auto px-2 py-1 mt-2"
+            className="btn_blue mx-auto px-3 py-1 mt-2"
             disabled={login.isLoading}
           >
             Submit

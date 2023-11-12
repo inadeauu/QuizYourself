@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { trpc } from "../utils/trpc"
-import Input from "../components/Input"
+import Input from "../components/misc/Input"
 import { Link, useNavigate } from "react-router-dom"
 
 type fieldErrors = {
@@ -72,7 +72,7 @@ const Signup = () => {
           />
           <button
             type="submit"
-            className="btn_blue mx-auto px-2 py-1 mt-2"
+            className="btn_blue mx-auto px-3 py-1 mt-2"
             disabled={signup.isLoading}
           >
             Submit

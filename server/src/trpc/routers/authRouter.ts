@@ -70,8 +70,6 @@ export const authRouter = router({
           code: "INTERNAL_SERVER_ERROR",
         })
       }
-
-      opts.ctx.res.clearCookie("connect.sid")
     })
   }),
   getAuthedUser: publicProcedure.query(async (opts) => {

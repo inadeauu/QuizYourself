@@ -7,14 +7,12 @@ import prisma from "../prisma/prisma"
 
 type CreateContextOptions = {
   req: Request
-  res: Response
   session: Express.Request["session"]
 }
 
 const createInnerTRPCContext = (opts: CreateContextOptions) => {
   return {
     req: opts.req,
-    res: opts.res,
     session: opts.session,
     prisma,
   }
@@ -27,7 +25,6 @@ export const createTRPCContext = async (
 
   return createInnerTRPCContext({
     req,
-    res,
     session: req.session,
   })
 }
