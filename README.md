@@ -1,13 +1,13 @@
 
 <h1>QuizYourself, a Web Application to Create and Take Quizzes.</h1>
 <p>QuizYourself is a responsive web application where users can create quizzes for others to take.</p>
-<p>Tech stack: React, Typescript, Tailwind CSS, Prisma (ORM), Node, tRPC</p>
+<p>Tech stack: React, Typescript, Tailwind CSS, Prisma (ORM), Node, tRPC, and PostgreSQL</p>
 <p>Features:</p>
 <ol>
   <li>Username and password sign up and login</li>
   <li>Create and delete quizzes</li>
   <ol>
-    <li>Quizzes can contain up to 20 questions, and each question can contain up to 8 answers.</li>
+    <li>Quizzes can contain up to 20 questions, and each question can contain up to 8 answers</li>
   </ol>
   <li>Take quizzes made by yourself and others</li>
   <li>Profile page containing each user's created quizzes</li>
