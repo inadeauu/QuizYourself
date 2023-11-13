@@ -4,6 +4,7 @@ import { Answer, QuizContext } from "../contexts/QuizProvider"
 import Input from "../components/misc/Input"
 import Textarea from "../components/misc/Textarea"
 import { trpc } from "../utils/trpc"
+import { useNavigate } from "react-router-dom"
 
 const CreateQuiz = () => {
   const {
@@ -22,7 +23,13 @@ const CreateQuiz = () => {
   const maxTitleLength = 75
   const maxDescriptionLength = 200
 
-  const submitQuiz = trpc.quiz.createQuiz.useMutation()
+  const navigate = useNavigate()
+
+  const submitQuiz = trpc.quiz.createQuiz.useMutation({
+    onSuccess: () => {
+      navigate("/")
+    },
+  })
 
   const checkAnswerNum = (element: Answer[]) => element.length < 1
   const checkCorrectAnswer = (element: Answer[]) =>
