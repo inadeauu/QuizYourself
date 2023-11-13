@@ -50,9 +50,10 @@ const Textarea = ({
         <p className="text-red-500 text-xs">{error && error}</p>
         {showCounter && (
           <span
-            className={`self-end text-xs ${
-              (props.value.length > maxLength || props.value.length == 0) &&
-              "text-red-500"
+            className={`self-end text-xs font-medium ${
+              props.value.length > maxLength || props.value.length == 0
+                ? "text-red-500"
+                : "text-green-600"
             }`}
           >
             {props.value.length} / {maxLength}
