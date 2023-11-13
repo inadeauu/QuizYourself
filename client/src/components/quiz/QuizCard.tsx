@@ -42,7 +42,7 @@ const QuizCard = ({ quizId }: QuizCardProps) => {
             Made {moment(quiz.data.created_at).fromNow()}
           </span>
         </div>
-        <span className="text-sm line-clamp-2">{quiz.data.description}</span>
+        <span className="text-sm line-clamp-1">{quiz.data.description}</span>
         <span className="text-sm text-neutral-600">
           {quiz.data.questionCount} question
           {quiz.data.questionCount !== 1 && "s"}
