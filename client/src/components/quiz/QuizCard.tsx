@@ -1,7 +1,7 @@
 import moment from "moment"
 import { trpc } from "../../utils/trpc"
 import { ImSpinner11 } from "react-icons/im"
-import { useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 type QuizCardProps = {
   quizId: string
@@ -29,7 +29,17 @@ const QuizCard = ({ quizId }: QuizCardProps) => {
             {quiz.data.title}
           </span>
           <span className="text-xs text-neutral-600">
-            Created {moment(quiz.data.created_at).fromNow()}
+            Created by{" "}
+            <Link
+              to={`/profile/${quiz.data.username}`}
+              onClick={(e) => e.stopPropagation()}
+              className="hover:underline"
+            >
+              {quiz.data.username}
+            </Link>
+          </span>
+          <span className="text-xs text-neutral-600">
+            Made {moment(quiz.data.created_at).fromNow()}
           </span>
         </div>
         <span className="text-sm line-clamp-2">{quiz.data.description}</span>

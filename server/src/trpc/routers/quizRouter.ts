@@ -2,6 +2,7 @@ import prisma from "../../prisma/prisma"
 import { protectedProcedure, publicProcedure, router } from "../trpc"
 import z from "zod"
 import { Answer, Quiz } from "@prisma/client"
+import { TRPCError } from "@trpc/server"
 
 const answerSchema = z.object({
   body: z
@@ -55,6 +56,7 @@ export const quizRouter = router({
         data: {
           title: opts.input.title,
           description: opts.input.description,
+          ownerId: opts.ctx.session.userId,
         },
       })
 
@@ -116,7 +118,11 @@ export const quizRouter = router({
       }
     }),
   getQuizInfo: publicProcedure
-    .input(z.object({ quizId: z.string().min(1, "Quiz ID required.") }))
+    .input(
+      z.object({
+        quizId: z.string().min(1, "Quiz ID required."),
+      })
+    )
     .query(async (opts) => {
       const quizInfo = await getQuizInfo(opts.input.quizId)
 
@@ -127,9 +133,20 @@ export const quizRouter = router({
       z.object({
         limit: z.number().min(1).max(50).nullish(),
         cursor: z.string().nullish(),
+        username: z.string().nullish(),
       })
     )
     .query(async (opts) => {
+      let ownerId = undefined
+
+      if (opts.input.username) {
+        ownerId = (
+          await prisma.app_user.findUnique({
+            where: { username: opts.input.username ?? undefined },
+          })
+        )?.id
+      }
+
       const limit = opts.input.limit ?? 5
 
       const quizzes = await prisma.quiz.findMany({
@@ -137,6 +154,9 @@ export const quizRouter = router({
         cursor: opts.input.cursor ? { id: opts.input.cursor } : undefined,
         orderBy: {
           created_at: "desc",
+        },
+        where: {
+          ownerId: ownerId ?? undefined,
         },
       })
 
@@ -152,15 +172,35 @@ export const quizRouter = router({
         nextCursor,
       }
     }),
+  deleteQuiz: protectedProcedure
+    .input(z.object({ quizId: z.string().min(1, "Quiz ID required.") }))
+    .mutation(async (opts) => {
+      const quiz = await prisma.quiz.findUnique({
+        where: { id: opts.input.quizId },
+      })
+
+      if (!quiz || quiz.ownerId !== opts.ctx.session.userId) {
+        throw new TRPCError({
+          message: "Cannot delete this quiz.",
+          code: "UNAUTHORIZED",
+        })
+      }
+
+      await prisma.quiz.delete({ where: { id: opts.input.quizId } })
+    }),
 })
 
 const getQuizInfo = async (quizId: string) => {
   type QuizInfo = ({
     questionCount: number
+    username: string
   } & Quiz)[]
 
   const quizInfo: QuizInfo =
-    await prisma.$queryRaw`SELECT a.*, CAST(COUNT(b.id) as INT) AS "questionCount" FROM "Quiz" a LEFT JOIN "Question" b on (b."quizId" = a.id) WHERE a.id = ${quizId} GROUP BY b."quizId", a.id`
+    await prisma.$queryRaw`SELECT a.*, CAST(COUNT(b.id) as INT) AS "questionCount", c.username FROM "Quiz" a 
+                          LEFT JOIN "Question" b on (b."quizId" = a.id) 
+                          LEFT JOIN "App_user" c on (c.id = a."ownerId") 
+                          WHERE a.id = ${quizId} GROUP BY b."quizId", a.id, c.id`
 
   return quizInfo[0]
 }

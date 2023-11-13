@@ -13,17 +13,21 @@ model App_user {
   password   String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  Quiz Quiz[]
 }
 
 model Quiz {
   id          String   @id @default(uuid())
   title       String   @db.VarChar(100)
   description String?  @db.VarChar(500)
+  ownerId     String
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
 
   Questions Question[]
   Answers   Answer[]
+  Owner     App_user   @relation(fields: [ownerId], references: [id], onDelete: Cascade)
 }
 
 model Question {
@@ -34,7 +38,7 @@ model Question {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  Quiz    Quiz     @relation(fields: [quizId], references: [id])
+  Quiz    Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
   Answers Answer[]
 }
 
@@ -48,6 +52,6 @@ model Answer {
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
-  Quiz     Quiz     @relation(fields: [quizId], references: [id])
-  Question Question @relation(fields: [questionId], references: [id])
+  Quiz     Quiz     @relation(fields: [quizId], references: [id], onDelete: Cascade)
+  Question Question @relation(fields: [questionId], references: [id], onDelete: Cascade)
 }

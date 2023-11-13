@@ -4,11 +4,15 @@ import QuizCard from "./QuizCard"
 import { useInView } from "react-intersection-observer"
 import { useEffect } from "react"
 
-const QuizList = () => {
+type QuizListProps = {
+  username?: string
+}
+
+const QuizList = ({ username }: QuizListProps) => {
   const { ref, inView } = useInView()
 
   const quizzes = trpc.quiz.getQuizzes.useInfiniteQuery(
-    { limit: 20 },
+    { limit: 20, username },
     { getNextPageParam: (lastPage) => lastPage.nextCursor?.id }
   )
 
@@ -30,7 +34,11 @@ const QuizList = () => {
           ))
         )
       ) : (
-        <span>No quizzes have been created yet.</span>
+        <span>
+          {!username
+            ? "No quizzes have been created yet."
+            : `User has not created any quizzes.`}
+        </span>
       )}
       <div ref={ref} />
     </div>

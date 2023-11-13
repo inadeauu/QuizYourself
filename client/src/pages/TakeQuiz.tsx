@@ -4,8 +4,11 @@ import { ImSpinner11 } from "react-icons/im"
 import { useState } from "react"
 import QuizQuestion from "../components/quiz/QuizQuestion"
 import moment from "moment"
+import { useAuth } from "../hooks/useAuth"
 
 const TakeQuiz = () => {
+  const { user } = useAuth()
+
   const [quizAnswers, setQuizAnswers] = useState<number[][]>(
     new Array(20).fill(null).map(() => new Array(0))
   )
@@ -14,10 +17,21 @@ const TakeQuiz = () => {
   const numAnswered = quizAnswers.filter((ansArr) => ansArr.length > 0)
 
   const navigate = useNavigate()
+  const utils = trpc.useUtils()
 
   const { id } = useParams()
 
   const quiz = trpc.quiz.getQuiz.useQuery({ quizId: id! })
+
+  const deleteQuiz = trpc.quiz.deleteQuiz.useMutation({
+    onSuccess: () => {
+      utils.quiz.getQuizzes.invalidate({
+        limit: 20,
+        cursor: undefined,
+      })
+      navigate("/")
+    },
+  })
 
   if (quiz.isLoading) return <ImSpinner11 className="animate-spin h-16 w-16" />
 
@@ -36,13 +50,25 @@ const TakeQuiz = () => {
   return (
     <div className="mx-auto max-w-xl">
       <div className="flex flex-col mb-6">
-        <div className="flex flex-col">
-          <span className="text-xl font-semibold">{quizInfo.title}</span>
-          <span className="text-xs text-neutral-600">
-            Created {moment(quizInfo.created_at).fromNow()}
-          </span>
+        <div className="flex justify-between items-center">
+          <div className="flex flex-col">
+            <span className="text-xl font-semibold">{quizInfo.title}</span>
+            <span className="text-xs text-neutral-600">
+              Created {moment(quizInfo.created_at).fromNow()}
+            </span>
+          </div>
+          {user?.id === quiz.data.quizInfo.ownerId && (
+            <button
+              className="btn_red py-2 px-3 text-sm"
+              onClick={() => {
+                deleteQuiz.mutate({ quizId: id! })
+              }}
+            >
+              Delete quiz
+            </button>
+          )}
         </div>
-        <span className="text-sm">{quizInfo.description}</span>
+        <span className="text-sm break-words mt-3">{quizInfo.description}</span>
         <div className="flex flex-col mt-3">
           <span className="text-sm">
             {quizInfo.questionCount} Question

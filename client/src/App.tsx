@@ -8,6 +8,7 @@ import ProtectedRoute from "./pages/ProtectedRoute"
 import QuizProvider from "./contexts/QuizProvider"
 import TakeQuiz from "./pages/TakeQuiz"
 import PageNotFound from "./pages/PageNotFound"
+import Profile from "./pages/Profile"
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
             }
           />
         </Route>
+        <Route path="/profile/:username" element={<Profile />} />
         <Route path="/quiz/:title/:id" element={<TakeQuiz />} />
         <Route path="/not-found" element={<PageNotFound />} />
         <Route path="*" element={<PageNotFound />} />
