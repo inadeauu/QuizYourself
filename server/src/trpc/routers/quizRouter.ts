@@ -1,7 +1,7 @@
 import prisma from "../../prisma/prisma"
 import { protectedProcedure, publicProcedure, router } from "../trpc"
 import z from "zod"
-import { Answer } from "@prisma/client"
+import { Answer, Quiz } from "@prisma/client"
 
 const answerSchema = z.object({
   body: z
@@ -107,5 +107,17 @@ export const quizRouter = router({
         questions,
         answers,
       }
+    }),
+  getQuizInfo: publicProcedure
+    .input(z.object({ quizId: z.string().min(1, "Quiz ID required.") }))
+    .query(async (opts) => {
+      type QuizInfo = ({
+        questionCount: number
+      } & Quiz)[]
+
+      const quizInfo: QuizInfo =
+        await prisma.$queryRaw`SELECT a.*, CAST(COUNT(b.id) as INT) AS "questionCount" FROM "Quiz" a LEFT JOIN "Question" b on (b."quizId" = a.id) WHERE a.id = ${opts.input.quizId} GROUP BY b."quizId", a.id`
+
+      return quizInfo[0]
     }),
 })
