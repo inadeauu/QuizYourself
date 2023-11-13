@@ -159,7 +159,8 @@ const CreateQuiz = () => {
           answers.some(checkAnswerNum) ||
           answers.some(checkCorrectAnswer) ||
           questions.some(checkQuestionLength) ||
-          answers.some(checkAllAnswerLengths)
+          answers.some(checkAllAnswerLengths) ||
+          submitQuiz.isLoading
         }
       >
         Create quiz

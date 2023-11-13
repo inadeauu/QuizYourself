@@ -1,6 +1,7 @@
 import prisma from "../../prisma/prisma"
-import { protectedProcedure, router } from "../trpc"
+import { protectedProcedure, publicProcedure, router } from "../trpc"
 import z from "zod"
+import { Answer } from "@prisma/client"
 
 const answerSchema = z.object({
   body: z
@@ -78,5 +79,33 @@ export const quizRouter = router({
           })
         })
       })
+    }),
+  getQuiz: publicProcedure
+    .input(z.object({ quizId: z.string().min(1, "Quiz ID required.") }))
+    .query(async (opts) => {
+      const questions = await prisma.question.findMany({
+        where: { quizId: opts.input.quizId },
+        orderBy: {
+          index: "asc",
+        },
+      })
+
+      const answers: Answer[][] = []
+
+      for (const q of questions) {
+        const q_answers = await prisma.answer.findMany({
+          where: { questionId: q.id },
+          orderBy: {
+            index: "asc",
+          },
+        })
+
+        answers.push(q_answers)
+      }
+
+      return {
+        questions,
+        answers,
+      }
     }),
 })
