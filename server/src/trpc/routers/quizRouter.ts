@@ -83,12 +83,18 @@ export const quizRouter = router({
   getQuiz: publicProcedure
     .input(z.object({ quizId: z.string().min(1, "Quiz ID required.") }))
     .query(async (opts) => {
+      const quizInfo = await getQuizInfo(opts.input.quizId)
+
       const questions = await prisma.question.findMany({
         where: { quizId: opts.input.quizId },
         orderBy: {
           index: "asc",
         },
       })
+
+      if (!questions.length) {
+        return null
+      }
 
       const answers: Answer[][] = []
 
@@ -104,6 +110,7 @@ export const quizRouter = router({
       }
 
       return {
+        quizInfo,
         questions,
         answers,
       }
@@ -111,13 +118,19 @@ export const quizRouter = router({
   getQuizInfo: publicProcedure
     .input(z.object({ quizId: z.string().min(1, "Quiz ID required.") }))
     .query(async (opts) => {
-      type QuizInfo = ({
-        questionCount: number
-      } & Quiz)[]
+      const quizInfo = await getQuizInfo(opts.input.quizId)
 
-      const quizInfo: QuizInfo =
-        await prisma.$queryRaw`SELECT a.*, CAST(COUNT(b.id) as INT) AS "questionCount" FROM "Quiz" a LEFT JOIN "Question" b on (b."quizId" = a.id) WHERE a.id = ${opts.input.quizId} GROUP BY b."quizId", a.id`
-
-      return quizInfo[0]
+      return quizInfo
     }),
 })
+
+const getQuizInfo = async (quizId: string) => {
+  type QuizInfo = ({
+    questionCount: number
+  } & Quiz)[]
+
+  const quizInfo: QuizInfo =
+    await prisma.$queryRaw`SELECT a.*, CAST(COUNT(b.id) as INT) AS "questionCount" FROM "Quiz" a LEFT JOIN "Question" b on (b."quizId" = a.id) WHERE a.id = ${quizId} GROUP BY b."quizId", a.id`
+
+  return quizInfo[0]
+}
