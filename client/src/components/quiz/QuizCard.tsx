@@ -20,7 +20,7 @@ const QuizCard = ({ quizId }: QuizCardProps) => {
 
   return (
     <div
-      className="border-2 border-black w-fit hover:border-blue-400 hover:cursor-pointer"
+      className="border-2 border-black w-fit hover:border-blue-400 hover:cursor-pointer xs-max:w-full"
       onClick={() => navigate(`/quiz/${quiz.data.title}/${quizId}`)}
     >
       <div className="flex flex-col gap-2 p-4 w-[200px] h-[150px]">

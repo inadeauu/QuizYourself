@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom"
 import { useAuth } from "../../hooks/useAuth"
 import ProfileDropdown from "./ProfileDropdown"
+import UnauthDropdown from "./UnauthDropdown"
 
 const Navbar = () => {
   const { user } = useAuth()
@@ -12,14 +13,17 @@ const Navbar = () => {
           QuizYourself
         </Link>
         {!user ? (
-          <div className="flex gap-4">
-            <Link to="/signup" className="btn_blue py-1 px-3">
-              Sign up
-            </Link>
-            <Link to="/login" className="btn_blue py-1 px-3">
-              Log in
-            </Link>
-          </div>
+          <>
+            <div className="flex gap-4 xs-max:hidden">
+              <Link to="/signup" className="btn_blue py-1 px-3">
+                Sign up
+              </Link>
+              <Link to="/login" className="btn_blue py-1 px-3">
+                Log in
+              </Link>
+            </div>
+            <UnauthDropdown />
+          </>
         ) : (
           <ProfileDropdown />
         )}
