@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
-import QuizCard from "../components/quiz/QuizCard"
 import { useAuth } from "../hooks/useAuth"
+import QuizList from "../components/quiz/QuizList"
 
 const Home = () => {
   const { user } = useAuth()
@@ -22,8 +22,7 @@ const Home = () => {
           <span>Log in to create a quiz.</span>
         )}
       </div>
-      <QuizCard quizId="25c1b183-49e3-4861-8c18-e08fa05cd647" />
-      <QuizCard quizId="ac7c32ab-403e-48c5-87de-d2b0a337c458" />
+      <QuizList />
     </div>
   )
 }

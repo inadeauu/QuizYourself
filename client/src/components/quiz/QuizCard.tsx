@@ -12,7 +12,11 @@ const QuizCard = ({ quizId }: QuizCardProps) => {
 
   const navigate = useNavigate()
 
-  if (!quiz.data) return <ImSpinner11 className="animate-spin h-16 w-16" />
+  if (quiz.isLoading) return <ImSpinner11 className="animate-spin h-16 w-16" />
+
+  if (!quiz.data) {
+    return <p>Quiz not found.</p>
+  }
 
   return (
     <div
@@ -30,7 +34,8 @@ const QuizCard = ({ quizId }: QuizCardProps) => {
         </div>
         <span className="text-sm line-clamp-2">{quiz.data.description}</span>
         <span className="text-sm text-neutral-600">
-          {quiz.data.questionCount} questions
+          {quiz.data.questionCount} question
+          {quiz.data.questionCount !== 1 && "s"}
         </span>
       </div>
     </div>

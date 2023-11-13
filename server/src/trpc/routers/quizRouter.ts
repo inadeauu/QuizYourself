@@ -122,6 +122,36 @@ export const quizRouter = router({
 
       return quizInfo
     }),
+  getQuizzes: publicProcedure
+    .input(
+      z.object({
+        limit: z.number().min(1).max(50).nullish(),
+        cursor: z.string().nullish(),
+      })
+    )
+    .query(async (opts) => {
+      const limit = opts.input.limit ?? 5
+
+      const quizzes = await prisma.quiz.findMany({
+        take: limit + 1,
+        cursor: opts.input.cursor ? { id: opts.input.cursor } : undefined,
+        orderBy: {
+          created_at: "desc",
+        },
+      })
+
+      let nextCursor = undefined
+
+      if (quizzes.length > limit) {
+        const nextQuiz = quizzes.pop()
+        nextCursor = { id: nextQuiz!.id }
+      }
+
+      return {
+        quizzes,
+        nextCursor,
+      }
+    }),
 })
 
 const getQuizInfo = async (quizId: string) => {

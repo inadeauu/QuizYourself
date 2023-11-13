@@ -44,7 +44,10 @@ const TakeQuiz = () => {
         </div>
         <span className="text-sm">{quizInfo.description}</span>
         <div className="flex flex-col mt-3">
-          <span className="text-sm">{quizInfo.questionCount} Questions</span>
+          <span className="text-sm">
+            {quizInfo.questionCount} Question
+            {quizInfo.questionCount !== 1 && "s"}
+          </span>
           <span className="text-sm">
             Questions answered:{" "}
             <span
