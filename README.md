@@ -13,6 +13,11 @@
   <li>Profile page containing each user's created quizzes</li>
 </ol>
 
+<h2>Demo</h2>
+<p>Click here to view a demo of the website.</p>
+https://github.com/Pr0gramm3r404/QuizYourself/assets/123025115/0f1e75e8-07d6-4530-8cbc-2728ea773df9
+
+
 <h2>Local Install Instructions</h2>
 <p>To locally install and run this project on your machine:</p>
 <ol>
