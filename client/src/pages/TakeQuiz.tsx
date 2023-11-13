@@ -54,7 +54,10 @@ const TakeQuiz = () => {
           <div className="flex flex-col">
             <span className="text-xl font-semibold">{quizInfo.title}</span>
             <span className="text-xs text-neutral-600">
-              Created {moment(quizInfo.created_at).fromNow()}
+              Created by {quizInfo.username}
+            </span>
+            <span className="text-xs text-neutral-600">
+              Made {moment(quizInfo.created_at).fromNow()}
             </span>
           </div>
           {user?.id === quiz.data.quizInfo.ownerId && (

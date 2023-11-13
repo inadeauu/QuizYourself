@@ -16,6 +16,7 @@ const Profile = () => {
 
   return (
     <div className="flex flex-col gap-2">
+      <h1 className="text-2xl font-semibold">{username}</h1>
       <h1 className="text-xl font-medium">Profile</h1>
       <div className="flex flex-col gap-2">
         <h1 className="text-lg">My Quizzes</h1>

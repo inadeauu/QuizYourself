@@ -48,23 +48,25 @@ const ProfileDropdown = () => {
           <div className="flex flex-col">
             <div className="flex flex-col gap-1">
               <CgProfile size={40} className="mx-auto" />
-              <p className="text-center text-lg">{user.username}</p>
+              <p className="text-center text-lg line-clamp-1 break-all">
+                {user.username}
+              </p>
             </div>
             <hr className="bg-black h-[2px] my-4" />
             <div className="flex flex-col gap-2">
-              <Link
-                to="/create-quiz"
-                className="btn_orange py-1 px-2 text-sm"
-                onClick={() => setOpen((prev) => !prev)}
-              >
-                Create a quiz
-              </Link>
               <Link
                 to={`/profile/${user.username}`}
                 className="btn_orange py-1 px-2 text-sm"
                 onClick={() => setOpen((prev) => !prev)}
               >
                 Profile
+              </Link>
+              <Link
+                to="/create-quiz"
+                className="btn_orange py-1 px-2 text-sm"
+                onClick={() => setOpen((prev) => !prev)}
+              >
+                Create a quiz
               </Link>
             </div>
             <hr className="bg-black h-[2px] my-4" />

@@ -28,7 +28,7 @@ const QuizCard = ({ quizId }: QuizCardProps) => {
           <span className="font-semibold line-clamp-1 break-all">
             {quiz.data.title}
           </span>
-          <span className="text-xs text-neutral-600">
+          <span className="text-xs text-neutral-600 line-clamp-1 break-all">
             Created by{" "}
             <Link
               to={`/profile/${quiz.data.username}`}
