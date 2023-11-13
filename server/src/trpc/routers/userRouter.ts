@@ -1,4 +1,4 @@
-import prisma from "../../prisma/prisma"
+import prisma from "../../../prisma/prisma"
 import { publicProcedure, router } from "../trpc"
 import z from "zod"
 

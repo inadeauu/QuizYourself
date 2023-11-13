@@ -3,7 +3,7 @@ import * as trpcExpress from "@trpc/server/adapters/express"
 import type { Request, Response } from "express"
 import superjson from "superjson"
 import { ZodError } from "zod"
-import prisma from "../prisma/prisma"
+import prisma from "../../prisma/prisma"
 
 type CreateContextOptions = {
   req: Request
