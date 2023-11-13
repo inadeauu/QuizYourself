@@ -7,6 +7,8 @@ type TextareaProps = {
   error?: string | null
   maxLength?: number
   showCounter?: boolean
+  label?: string
+  minLength?: number
 } & React.DetailedHTMLProps<
   React.TextareaHTMLAttributes<HTMLTextAreaElement>,
   HTMLTextAreaElement
@@ -19,6 +21,8 @@ const Textarea = ({
   error = null,
   maxLength = 100,
   showCounter = false,
+  label,
+  minLength = 1,
   ...props
 }: TextareaProps) => {
   const textareaRef = useRef<HTMLTextAreaElement>(null)
@@ -37,6 +41,11 @@ const Textarea = ({
 
   return (
     <div>
+      {props.id && label && (
+        <label htmlFor={props.id} className="text-md">
+          {label}
+        </label>
+      )}
       <textarea
         ref={textareaRef}
         className={`${classes} border-2 outline-none rounded-sm w-full ${
@@ -51,7 +60,7 @@ const Textarea = ({
         {showCounter && (
           <span
             className={`self-end text-xs font-medium ${
-              props.value.length > maxLength || props.value.length == 0
+              props.value.length > maxLength || props.value.length < minLength
                 ? "text-red-500"
                 : "text-green-600"
             }`}

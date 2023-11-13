@@ -1,8 +1,12 @@
 import { createContext, useState } from "react"
 
 type QuizContextType = {
+  title: string
+  description: string
   questions: string[]
   answers: Answer[][]
+  setTitle: React.Dispatch<React.SetStateAction<string>>
+  setDescription: React.Dispatch<React.SetStateAction<string>>
   setQuestions: React.Dispatch<React.SetStateAction<string[]>>
   setAnswers: React.Dispatch<React.SetStateAction<Answer[][]>>
   addQuestion: () => void
@@ -28,6 +32,8 @@ const initAnswer: Answer = {
 export const QuizContext = createContext<QuizContextType>({} as QuizContextType)
 
 const QuizProvider = ({ children }: QuizProviderProps) => {
+  const [title, setTitle] = useState("")
+  const [description, setDescription] = useState("")
   const [questions, setQuestions] = useState<string[]>([""])
   const [answers, setAnswers] = useState<Answer[][]>([[initAnswer]])
 
@@ -72,8 +78,12 @@ const QuizProvider = ({ children }: QuizProviderProps) => {
   }
 
   const value: QuizContextType = {
+    title,
+    description,
     questions,
     answers,
+    setTitle,
+    setDescription,
     setQuestions,
     setAnswers,
     addQuestion,

@@ -29,6 +29,7 @@ model Quiz {
 model Question {
   id         String   @id @default(uuid())
   body       String   @db.VarChar(500)
+  index      Int
   quizId     String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -40,6 +41,7 @@ model Question {
 model Answer {
   id         String   @id @default(uuid())
   body       String   @db.VarChar(500)
+  index      Int
   correct    Boolean
   quizId     String
   questionId String

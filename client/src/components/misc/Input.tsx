@@ -6,6 +6,9 @@ type InputProps = {
   password?: boolean
   classes?: string
   error?: string | null
+  showCounter?: boolean
+  maxLength?: number
+  minLength?: number
 } & React.DetailedHTMLProps<
   React.InputHTMLAttributes<HTMLInputElement>,
   HTMLInputElement
@@ -16,11 +19,15 @@ const Input = ({
   error = null,
   classes,
   password = false,
+  showCounter = false,
+  maxLength = 100,
+  minLength = 1,
   ...props
 }: InputProps) => {
   const [showPassword, setShowPassword] = useState(false)
 
   props.type = password ? (showPassword ? "text" : "password") : props.type
+  props.value = "" + (props.value || "")
 
   return (
     <div className="flex flex-col gap-1">
@@ -51,7 +58,20 @@ const Input = ({
           </div>
         )}
       </div>
-      <p className="text-red-500 text-xs">{error && error}</p>
+      <div className="flex justify-between">
+        <p className="text-red-500 text-xs">{error && error}</p>
+        {showCounter && (
+          <span
+            className={`self-end text-xs font-medium ${
+              props.value.length > maxLength || props.value.length < minLength
+                ? "text-red-500"
+                : "text-green-600"
+            }`}
+          >
+            {props.value.length} / {maxLength}
+          </span>
+        )}
+      </div>
     </div>
   )
 }
