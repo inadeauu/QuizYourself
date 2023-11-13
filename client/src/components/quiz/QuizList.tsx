@@ -23,10 +23,14 @@ const QuizList = () => {
 
   return (
     <div className="flex flex-wrap gap-2">
-      {quizzes.data?.pages.map((page, i) =>
-        page.quizzes.map((quiz, j) => (
-          <QuizCard key={`quiz-${i}-${j}`} quizId={quiz.id} />
-        ))
+      {quizzes.data?.pages[0].quizzes.length ? (
+        quizzes.data?.pages.map((page, i) =>
+          page.quizzes.map((quiz, j) => (
+            <QuizCard key={`quiz-${i}-${j}`} quizId={quiz.id} />
+          ))
+        )
+      ) : (
+        <span>No quizzes have been created yet.</span>
       )}
       <div ref={ref} />
     </div>
