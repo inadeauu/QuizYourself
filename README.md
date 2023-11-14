@@ -15,7 +15,8 @@
 
 <h2>Demo</h2>
 <p>Click here to view a demo of the website.</p>
-https://github.com/inadeauu/QuizYourself/assets/123025115/0f1e75e8-07d6-4530-8cbc-2728ea773df9
+https://github.com/inadeauu/QuizYourself/assets/123025115/3550d78c-8d0c-402b-83c9-3fca1c511304
+
 
 
 <h2>Local Install Instructions</h2>
